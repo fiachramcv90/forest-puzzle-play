@@ -94,6 +94,28 @@ body {
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<style>
+#rotate { display: none; position: fixed; inset: 0; z-index: 10; align-items: center; justify-content: center;
+  padding: 24px; text-align: center; background: #3d6b8a; color: #fff; font: 600 28px system-ui, sans-serif; }
+@media (orientation: portrait) { #rotate { display: flex; } }
+</style>
+<script>
+// The game lays itself out once, for a landscape screen (the tablet is locked sideways). In portrait, ask for the
+// phone to be turned; if the game started in portrait, reload once it's sideways so it lays out for landscape.
+(function () {
+  var portrait = matchMedia('(orientation: portrait)');
+  var startedPortrait = portrait.matches;
+  document.addEventListener('DOMContentLoaded', function () {
+    var note = document.createElement('div');
+    note.id = 'rotate';
+    note.textContent = 'Turn your phone sideways';
+    document.body.appendChild(note);
+  });
+  portrait.addEventListener('change', function () {
+    if (startedPortrait && !portrait.matches) location.reload();
+  });
+})();
+</script>
 	</head>
 	<body>
 		<canvas id="canvas">
